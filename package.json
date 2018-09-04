@@ -4,8 +4,9 @@
   "description": "Tool to do browser automation",
   "main": "index.js",
   "scripts": {
-    "test:integration:docker": "wdio wdio.conf.js",
-    "setup": "npm install"
+    "test:integration:docker": "wdio ./config/wdio/wdio.docker.conf.js",
+    "test:integration:local": "wdio ./config/wdio/wdio.local.conf.js",
+    "setup": "npm install && node_modules/.bin/selenium-standalone install"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
     "eslint": "^5.5.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-mocha": "^5.2.0",
+    "selenium-standalone": "^6.15.2",
     "wdio-mocha-framework": "^0.6.3",
     "wdio-spec-reporter": "^0.1.5",
     "webdriverio": "^4.13.2"

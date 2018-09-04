@@ -24,8 +24,8 @@ services:
       - VNC_NO_PASSWORD=1
       - SCREEN_WIDTH=1920
       - SCREEN_HEIGHT=1080
-      - NODE_MAX_INSTANCES=10
-      - NODE_MAX_SESSION=10
+      - NODE_MAX_INSTANCES=20
+      - NODE_MAX_SESSION=20
       
 
   firefox:
@@ -43,8 +43,8 @@ services:
       - VNC_NO_PASSWORD=1
       - SCREEN_WIDTH=1920
       - SCREEN_HEIGHT=1080
-      - NODE_MAX_INSTANCES=10
-      - NODE_MAX_SESSION=10
+      - NODE_MAX_INSTANCES=20
+      - NODE_MAX_SESSION=20
 
   test:
     build: .
