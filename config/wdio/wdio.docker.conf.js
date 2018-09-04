@@ -14,11 +14,14 @@ exports.config = {
     {
       browserName: 'chrome',
       chromeOptions: {
-        args: ['no-sandbox', 'disable-web-security']
+        args: ['no-sandbox', 'disable-web-security', '--headless']
       }
     },
     {
-      browserName: 'firefox'
+      browserName: 'firefox',
+      'moz:firefoxOptions': {
+        args: ['-headless']
+      }
     }
   ],
   mochaOpts: {
