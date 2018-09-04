@@ -1,0 +1,36 @@
+{
+  "name": "browser-testing",
+  "version": "1.0.0",
+  "description": "Tool to do browser automation",
+  "main": "index.js",
+  "scripts": {
+    "test:integration:docker": "wdio wdio.conf.js",
+    "setup": "npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cultureamp/browser-testing.git"
+  },
+  "keywords": [
+    "testing",
+    "automation",
+    "browser",
+    "visual"
+  ],
+  "author": "Kunwardeep Singh Bedi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cultureamp/browser-testing/issues"
+  },
+  "homepage": "https://github.com/cultureamp/browser-testing#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "chai": "^4.1.2",
+    "eslint": "^5.5.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-mocha": "^5.2.0",
+    "wdio-mocha-framework": "^0.6.3",
+    "wdio-spec-reporter": "^0.1.5",
+    "webdriverio": "^4.13.2"
+  }
+}
