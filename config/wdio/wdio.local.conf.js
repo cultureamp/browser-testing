@@ -1,5 +1,6 @@
-// const Promise = require('es6-promise').Promise;
 const selenium = require('selenium-standalone');
+const config = require('./wdio.default.conf');
+
 const startSeleniumServer = () => {
   return new Promise((resolve, reject) => {
     selenium.start((err, process) => (err ? reject(err) : resolve(process)));
@@ -17,23 +18,10 @@ exports.config = {
   reporters: ['dot', 'spec'],
   specs: ['./tests/*.test.js'],
   maxInstances: 20,
-  capabilities: [
-    {
-      browserName: 'chrome',
-      chromeOptions: {
-        args: ['no-sandbox', 'disable-web-security', '--headless']
-      }
-    },
-    {
-      browserName: 'firefox',
-      'moz:firefoxOptions': {
-        args: ['-headless']
-      }
-    }
-  ],
+  capabilities: [config.chromeCapabilities, config.firefoxCapabilities],
   mochaOpts: {
     timeout: 40000,
-    compilers: ['js:babel-core/register']
+    compilers: ['js:babel-register']
   },
   onPrepare: () => {
     return startSeleniumServer().then(process => {

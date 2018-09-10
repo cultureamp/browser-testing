@@ -1,3 +1,5 @@
+const config = require('./wdio.default.conf');
+
 exports.config = {
   host: 'selenium-hub',
   port: 4444,
@@ -10,20 +12,7 @@ exports.config = {
   reporters: ['dot', 'spec'],
   specs: ['./tests/*.test.js'],
   maxInstances: 10,
-  capabilities: [
-    {
-      browserName: 'chrome',
-      chromeOptions: {
-        args: ['no-sandbox', 'disable-web-security', '--headless']
-      }
-    },
-    {
-      browserName: 'firefox',
-      'moz:firefoxOptions': {
-        args: ['-headless']
-      }
-    }
-  ],
+  capabilities: [config.chromeCapabilities, config.firefoxCapabilities],
   mochaOpts: {
     timeout: 40000,
     compilers: ['js:babel-core/register']

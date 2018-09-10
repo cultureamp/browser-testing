@@ -26,8 +26,6 @@ services:
       - SCREEN_HEIGHT=1080
       - NODE_MAX_INSTANCES=10
       - NODE_MAX_SESSION=10
-      
-
   firefox:
     image: selenium/node-firefox-debug:3.12
     ports:

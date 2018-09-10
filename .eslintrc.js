@@ -200,5 +200,8 @@ module.exports = {
     "prefer-reflect": 0,
     "prefer-template": 2,
     "require-yield": 2
+  },
+  "parserOptions": {
+    "sourceType": "module"
   }
 }
