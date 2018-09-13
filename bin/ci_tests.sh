@@ -3,7 +3,12 @@ set -e
 set -o pipefail
 set -u
 
-TEST_NAME=${1:-}
+TEST_TYPE=${TEST_TYPE:-'functional'}
+echo "Running $TEST_TYPE tests"
+
+if [ "$TEST_TYPE" == 'visual' ]; then
+    source bin/visualTestingEnv.sh
+fi
 
 export COMPOSE_FILE=docker-compose.yml
 export SELENIUM_REMOTE_HOST=selenium-hub
@@ -16,8 +21,8 @@ docker-compose build
 
 echo "Running tests"
 docker-compose down --remove-orphans
-docker-compose run --rm test npm run test:integration:docker
+docker-compose run --rm test \
+    /bin/bash -c "DOCKER=true node_modules/webdriverio/bin/wdio ./config/wdio/wdio.$TEST_TYPE.conf.js"
 
-#Stop and remove containers, networks, images, and volumes
 echo "Stop all containers"
 docker-compose down --remove-orphans

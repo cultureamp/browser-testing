@@ -85,7 +85,6 @@ module.exports = {
     "no-floating-decimal": 2,
     "no-implicit-coercion": 2,
     "no-implied-eval": 2,
-    "no-invalid-this": 2,
     "no-iterator": 2,
     "no-labels": 2,
     "no-lone-blocks": 2,
@@ -202,6 +201,7 @@ module.exports = {
     "require-yield": 2
   },
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaVersion": 2018
   }
 }

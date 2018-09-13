@@ -9,7 +9,7 @@ services:
       - GRID_MAX_SESSION=10  
 
   chrome:
-    image: selenium/node-chrome-debug:3.12
+    image: selenium/node-chrome-debug:3.14
     # enable this for debugging through vnc viewer
     ports:
       - "5900:5900"
@@ -27,7 +27,7 @@ services:
       - NODE_MAX_INSTANCES=10
       - NODE_MAX_SESSION=10
   firefox:
-    image: selenium/node-firefox-debug:3.12
+    image: selenium/node-firefox-debug:3.14
     ports:
       - "5901:5900"
     volumes:
@@ -46,6 +46,17 @@ services:
 
   test:
     build: .
+    environment:
+      - VISUAL_DROID_PASSWORD
+      - URL_VISUAL_DROID
+      - BUILDKITE
+      - BUILDKITE_BRANCH              
+      - BUILDKITE_BUILD_ID    
+      - CROSS_BROWSER
+      - BROWSER_CONFIG
+      - BRANCH_SHA
+      - COMPARE_SHA
+      - PROJECT_NAME
     depends_on:
       - selenium-hub
       - chrome

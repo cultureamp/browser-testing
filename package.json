@@ -4,9 +4,12 @@
   "description": "Tool to do browser automation",
   "main": "index.js",
   "scripts": {
-    "test:integration:docker": "wdio ./config/wdio/wdio.docker.conf.js",
-    "test:integration:local": "wdio ./config/wdio/wdio.local.conf.js",
-    "setup": "npm install && node_modules/.bin/selenium-standalone install"
+    "test:functional:docker": "TEST_TYPE=functional bin/ci_tests.sh",
+    "test:functional:local": "wdio ./config/wdio/wdio.functional.conf.js",
+    "test:visual:docker": "TEST_TYPE=visual bin/ci_tests.sh",
+    "test:visual:local": "source bin/visualTestingEnv.sh && wdio ./config/wdio/wdio.visual.conf.js",
+    "setup": "npm install && node_modules/.bin/selenium-standalone install",
+    "lint": "eslint --config .eslintrc.js \"**/*.js\""
   },
   "repository": {
     "type": "git",
@@ -25,7 +28,12 @@
   },
   "homepage": "https://github.com/cultureamp/browser-testing#readme",
   "devDependencies": {
-    "babel-core": "^6.26.3",
+    "@babel/core": "^7.0.1",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
+    "axios": "^0.18.0",
     "chai": "^4.1.2",
     "eslint": "^5.5.0",
     "eslint-plugin-import": "^2.14.0",
@@ -34,5 +42,6 @@
     "wdio-mocha-framework": "^0.6.3",
     "wdio-spec-reporter": "^0.1.5",
     "webdriverio": "^4.13.2"
-  }
+  },
+  "dependencies": {}
 }
