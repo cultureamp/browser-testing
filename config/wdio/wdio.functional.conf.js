@@ -52,5 +52,5 @@ const dockerConfig = {
 };
 
 exports.config = process.env.DOCKER ?
-  exports.config = Object.assign({}, functionalConfig, dockerConfig) :
+  Object.assign({}, functionalConfig, dockerConfig) :
   Object.assign({}, functionalConfig, localConfig);

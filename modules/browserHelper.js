@@ -5,13 +5,13 @@ const getBrowserConfig = () => {
   const browserCapabilities = browser.desiredCapabilities;
   const browserConfig = {
     // Maybe fail if these values are not provided
-    browserName: browserCapabilities.browserName,
     os: browserCapabilities.os,
-    osVersion: browserCapabilities.osVersion,
+    osVersion: browserCapabilities.os_version,
     width: browserCapabilities.width,
     height: browserCapabilities.height
   };
 
+  browserConfig.browserName = browserCapabilities.browserName;
   if (browserCapabilities.browserVersion) {
     browserConfig.browserVersion = browserCapabilities.browserVersion;
   }
@@ -34,6 +34,7 @@ const getImageKey = metadata =>
 const takeScreenShot = (retries = 0) => {
   const MAX_RETRIES = 4;
   if (retries === MAX_RETRIES) {
+    // [TODO] Before throwing error save last three screenshots.
     throw new Error(`Took ${MAX_RETRIES}. But the images did not match`);
   }
 

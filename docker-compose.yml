@@ -57,6 +57,8 @@ services:
       - BRANCH_SHA
       - COMPARE_SHA
       - PROJECT_NAME
+      - BROWSERSTACK_USERNAME
+      - BROWSERSTACK_ACCESS_KEY
     depends_on:
       - selenium-hub
       - chrome
