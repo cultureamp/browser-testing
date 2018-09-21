@@ -1,4 +1,4 @@
-const { saveImage } = require('./visualDroidApi');
+const { saveImage } = require('./apiRequests/visualDroidApi');
 const Promise = require('bluebird');
 
 const getBrowserConfig = () => {

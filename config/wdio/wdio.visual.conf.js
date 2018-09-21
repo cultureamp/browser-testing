@@ -1,6 +1,7 @@
 const selenium = require('selenium-standalone');
 const config = require('./wdio.default.conf');
 const browserstack = require('browserstack-local');
+const browserStackApi = require('../../modules/apiRequests/browserstackApi');
 const startSeleniumServer = () => {
   return new Promise((resolve, reject) => {
     selenium.start((err, process) => (err ? reject(err) : resolve(process)));
