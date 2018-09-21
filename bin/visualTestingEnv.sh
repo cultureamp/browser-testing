@@ -3,17 +3,16 @@ set -e
 set -o pipefail
 set -u
 
-CROSS_BROWSER=${CROSS_BROWSER:-}
-BROWSER_CONFIG=${BROWSER_CONFIG:-}
+BROWSER=${BROWSER:-}
 BUILDKITE=${BUILDKITE:-}
 BUILDKITE_BUILD_URL=${BUILDKITE_BUILD_URL:-}
 BUILDKITE_JOB_ID=${BUILDKITE_JOB_ID:-}
-PROJECT_NAME=temp
+PROJECT_NAME='browser-testing'
 
-if [[ "$CROSS_BROWSER" == true ]] || [[ "$BROWSER_CONFIG" == 'Firefox' ]]; then
-    export PROJECT_NAME="${PROJECT_NAME}_cross_browser"
-else
+if [[ -z "$BROWSER" ]]; then
     export PROJECT_NAME="$PROJECT_NAME"
+else
+    export PROJECT_NAME="${PROJECT_NAME}_cross_browser"
 fi
 
 export CURRENT_BRANCH=${BUILDKITE_BRANCH:-$(git rev-parse --abbrev-ref HEAD)}
@@ -45,9 +44,7 @@ fi
 LAST_COMMIT_SHA=${LAST_COMMIT_SHA:-}
 
 echo '--- Debug Output'
-echo "Last commit    - $LAST_COMMIT_SHA"
 echo "Project name   - $PROJECT_NAME"
 echo "Branch sha     - $BRANCH_SHA"
 echo "Compare sha    - $COMPARE_SHA"
 echo "Current branch - $CURRENT_BRANCH"
-echo "Project name   - $PROJECT_NAME"

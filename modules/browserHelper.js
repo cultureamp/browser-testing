@@ -72,6 +72,7 @@ const setBrowserResolution = (w, h) => {
 exports.runVisualTest = t => () => {
   const metadata = getMetaData(t.test.fullTitle());
   const imageKey = getImageKey(metadata);
+
   return setBrowserResolution(metadata.width, metadata.height)
     .then(() => takeScreenShot())
     .then(screenshot => saveImage(screenshot.value, imageKey, metadata))

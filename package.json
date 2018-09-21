@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "Tool to do browser automation",
   "main": "index.js",
+  "engines": {
+     "node" : ">=8.11.4" 
+  },
   "scripts": {
+    "nodecheck": "source ~/.nvm/nvm.sh && nvm use",
     "test:functional:docker": "TEST_TYPE=functional bin/ci_tests.sh",
     "test:functional:local": "wdio ./config/wdio/wdio.functional.conf.js",
     "test:visual:docker": "TEST_TYPE=visual bin/ci_tests.sh",
     "test:visual:local": "source bin/visualTestingEnv.sh && wdio ./config/wdio/wdio.visual.conf.js",
-    "setup": "npm install && node_modules/.bin/selenium-standalone install",
+    "setup": "npm run nodecheck && npm install && node_modules/.bin/selenium-standalone install",
     "lint": "eslint --config .eslintrc.js \"**/*.js\""
   },
   "repository": {

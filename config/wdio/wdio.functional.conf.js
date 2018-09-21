@@ -9,28 +9,10 @@ const startSeleniumServer = () => {
 
 let seleniumProcess;
 
-const functionalConfig = {
-  baseUrl: 'http://www.cultureamp.design',
-  framework: 'mocha',
-  waitforTimeout: 10000,
-  logLevel: 'error',
-  coloredLogs: true,
-  reporters: ['dot', 'spec'],
-  specs: ['./tests/functional/**/*.test.js'],
-  sync: false,
-  mochaOpts: {
-    timeout: 10000,
-    compilers: ['js:@babel/register']
-  },
-  before: () => {
-    const chai = require('chai');
-    global.expect = chai.expect;
-  }
-};
+const functionalConfig = { ...config.defaultConfig, specs: ['./tests/functional/**/*.test.js'] };
 
 const localConfig = {
   maxInstances: 20,
-  capabilities: [config.chromeCapabilities],
   onPrepare: () => {
     return startSeleniumServer().then(process => {
       seleniumProcess = process;
@@ -47,10 +29,8 @@ const dockerConfig = {
   host: 'selenium-hub',
   port: 4444,
   path: '/wd/hub',
-  maxInstances: 10,
-  capabilities: [config.chromeCapabilities, config.firefoxCapabilities]
-};
+  maxInstances: 10 };
 
 exports.config = process.env.DOCKER ?
-  Object.assign({}, functionalConfig, dockerConfig) :
-  Object.assign({}, functionalConfig, localConfig);
+  { ...functionalConfig, ...dockerConfig } :
+  { ...functionalConfig, ...localConfig };
