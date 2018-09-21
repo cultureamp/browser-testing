@@ -40,24 +40,24 @@ const browserStackConfig = {
   // Code to start browserstack local before start of test
   onPrepare() {
     // eslint-disable-next-line no-console
-    console.log('Connecting to BrowserStack');
-    return new Promise(function(resolve, reject) {
+    console.log('Connecting to BrowserStack...');
+    return new Promise((resolve, reject) => {
       browserStackConnection = new browserstack.Local();
       // eslint-disable-next-line consistent-return
-      browserStackConnection.start({ 'key': exports.config.key, force: true }, function(error) {
+      browserStackConnection.start({ 'key': exports.config.key, force: true }, error => {
         if (error) {
           return reject(error);
         }
         // eslint-disable-next-line no-console
-        console.log('Connected with BrowserStack.');
+        console.log('Connected to BrowserStack.');
         resolve();
       });
     });
   },
   // Code to stop browserstack local after end of test
   onComplete() {
-    return new Promise(function(resolve) {
-      browserStackConnection.stop(function() {
+    return new Promise(resolve => {
+      browserStackConnection.stop(() => {
         // eslint-disable-next-line no-console
         console.log('Stopped BrowserStack Connection');
         resolve();

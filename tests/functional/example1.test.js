@@ -1,5 +1,5 @@
-describe('CultureAmp Design website style page 1', function() {
-  it('shows the text Visuals', function() {
+describe('CultureAmp Design website style page 1', () => {
+  it('shows the text Visuals', () => {
     return browser
       .url('/styles')
       .getText('[id=visuals]')

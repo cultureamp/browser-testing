@@ -36,14 +36,16 @@ exports.saveImage = (imgBase64str, imageKey, metadata, compareOptions) => {
 
   return request.post('/', payload)
     .then(response => {
-      if (typeof response.data.errorMessage !== 'undefined') {
-        throw new Error(`Visual comparison fail - ${response.data.errorMessage}`);
+      const data = response.data;
+      if (typeof data.errorMessage !== 'undefined') {
+        throw new Error(`Visual comparison fail - ${data.errorMessage}`);
       }
       if (!BUILDKITE) {
         // Maybe setup so that we get debug info with a debug flag when not running in buildkite
         // eslint-disable-next-line no-console
-        console.info(response.data);
+        console.info(data);
+        return data.upload && data.imagesMatch;
       }
-      return true;
+      return data.upload;
     });
 };

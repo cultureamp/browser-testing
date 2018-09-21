@@ -69,12 +69,11 @@ const setBrowserResolution = (w, h) => {
     });
 };
 
-exports.runVisualTest = t => () => {
-  const metadata = getMetaData(t.test.fullTitle());
+exports.runVisualTest = title => {
+  const metadata = getMetaData(title);
   const imageKey = getImageKey(metadata);
 
   return setBrowserResolution(metadata.width, metadata.height)
     .then(() => takeScreenShot())
-    .then(screenshot => saveImage(screenshot.value, imageKey, metadata))
-    .then(success => expect(success).to.equal(true));
+    .then(screenshot => saveImage(screenshot.value, imageKey, metadata));
 };

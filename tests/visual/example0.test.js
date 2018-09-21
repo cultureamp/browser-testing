@@ -1,11 +1,10 @@
-const { runVisualTest } = require('../../modules/browserHelper');
+require('../../modules/hooksHelper');
 
-describe('CultureAmp Design website style page 0', function() {
-  it('shows the text Visuals', function() {
+describe('CultureAmp Design website style page 0', () => {
+  it('shows the text Visuals', () => {
     return browser
       .url('/styles')
       .getText('[id=visuals]')
-      .then(text => expect(text).to.equal('Visuals'))
-      .then(runVisualTest(this));
+      .then(text => expect(text).to.equal('Visuals'));
   });
 });

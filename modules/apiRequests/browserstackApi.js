@@ -10,11 +10,26 @@ const request = axios.create({
   }
 });
 
-exports.getPlanInfo = () => {
-  return request.get('plans.json')
+exports.connectionsAvailable = () => {
+  return request.get('plan.json')
     .then(response => {
+      // eslint-disable-next-line no-console
       console.log(response.data);
-    }).catch(e => {
-      throw new Error(`Unable to get current open connections with browserstack, Error ${e}`);
+      return true;
+    })
+    .catch(e => {
+      // eslint-disable-next-line no-console
+      console.log(`Unable to get browserstack plan - ${e}`);
+      return false;
+    });
+};
+
+exports.browserstackTestRunUrl = sessionId => {
+  return request.get(`sessions/${sessionId}.json`)
+    .then(response => response.data.automation_session.public_url)
+    .catch(e => {
+      // eslint-disable-next-line no-console
+      console.log(`Unable to get sessionid - ${e}`);
+      return false;
     });
 };
