@@ -41,7 +41,6 @@ exports.saveImage = (imgBase64str, imageKey, metadata, compareOptions) => {
         throw new Error(`Visual comparison fail - ${data.errorMessage}`);
       }
       if (!BUILDKITE) {
-        // Maybe setup so that we get debug info with a debug flag when not running in buildkite
         // eslint-disable-next-line no-console
         console.info(data);
         return data.upload && data.imagesMatch;

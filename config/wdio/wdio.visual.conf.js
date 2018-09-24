@@ -1,15 +1,15 @@
 const selenium = require('selenium-standalone');
 const config = require('./wdio.default.conf');
+const { CURRENT_BROWSER, SUPPORTED_BROWSERS } = require('../../modules/browserHelper');
 const browserstack = require('browserstack-local');
-const browserStackApi = require('../../modules/apiRequests/browserstackApi');
+let seleniumProcess;
+let browserStackConnection;
+
 const startSeleniumServer = () => {
   return new Promise((resolve, reject) => {
     selenium.start((err, process) => (err ? reject(err) : resolve(process)));
   });
 };
-
-let seleniumProcess;
-let browserStackConnection;
 
 const visualConfig = { ...config.defaultConfig, specs: ['./tests/visual/**/*.test.js'] };
 
@@ -37,14 +37,14 @@ const dockerConfig = {
 const browserStackConfig = {
   user: process.env.BROWSERSTACK_USERNAME,
   key: process.env.BROWSERSTACK_ACCESS_KEY,
-  // Code to start browserstack local before start of test
+  maxInstances: 3,
   onPrepare() {
     // eslint-disable-next-line no-console
     console.log('Connecting to BrowserStack...');
     return new Promise((resolve, reject) => {
       browserStackConnection = new browserstack.Local();
       // eslint-disable-next-line consistent-return
-      browserStackConnection.start({ 'key': exports.config.key, force: true }, error => {
+      browserStackConnection.start({ force: true }, error => {
         if (error) {
           return reject(error);
         }
@@ -54,7 +54,6 @@ const browserStackConfig = {
       });
     });
   },
-  // Code to stop browserstack local after end of test
   onComplete() {
     return new Promise(resolve => {
       browserStackConnection.stop(() => {
@@ -66,7 +65,7 @@ const browserStackConfig = {
   }
 };
 
-if (config.CURRENT_BROWSER && config.CURRENT_BROWSER !== config.SUPPORTED_BROWSERS.FIREFOX) {
+if (CURRENT_BROWSER && CURRENT_BROWSER !== SUPPORTED_BROWSERS.FIREFOX) {
   // run non chrome and firefox tests in browserstack
   exports.config = { ...visualConfig, ...browserStackConfig };
 } else if (process.env.DOCKER) {

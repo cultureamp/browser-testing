@@ -1,7 +1,6 @@
 const SCREEN_SIZE_DEFAULT = '2048x1536';
 const SCREEN_SIZE_SAFARI = '1920x1080';
-const CURRENT_BROWSER = process.env.BROWSER ? process.env.BROWSER.toLocaleLowerCase() : null;
-const SUPPORTED_BROWSERS = { FIREFOX: 'firefox', SAFARI: 'safari', IE10: 'ie10', IE11: 'ie11', EDGE: 'edge' };
+const { SUPPORTED_BROWSERS, CURRENT_BROWSER } = require('../../modules/browserHelper.js');
 const PROJECT_NAME = process.env.PROJECT_NAME;
 
 const chromeCapabilities = {
@@ -76,7 +75,7 @@ const defaultConfig = {
   capabilities: capabilities(),
   framework: 'mocha',
   mochaOpts: {
-    timeout: 60000,
+    timeout: 600000,
     compilers: ['js:@babel/register']
   },
   before: () => {
@@ -88,7 +87,5 @@ const defaultConfig = {
 };
 
 module.exports = {
-  defaultConfig,
-  CURRENT_BROWSER,
-  SUPPORTED_BROWSERS
+  defaultConfig
 };
