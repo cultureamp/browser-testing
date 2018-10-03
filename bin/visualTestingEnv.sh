@@ -31,7 +31,7 @@ if [ -z "$VISUAL_DROID_PASSWORD" ] ; then
     echo "
             Visual droid api is now behind a secure end point and needs a password to run.
             Please set the value of VISUAL_DROID_PASSWORD
-            To get the password please check last pass secure notes under visual droid api"
+            To get the password please check LastPass secure notes under visual droid api"
     exit 1
 fi
 

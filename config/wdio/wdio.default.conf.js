@@ -1,6 +1,10 @@
+// This is the screen size and not the size of the browser window
 const SCREEN_SIZE_DEFAULT = '2048x1536';
 const SCREEN_SIZE_SAFARI = '1920x1080';
-const { SUPPORTED_BROWSERS, CURRENT_BROWSER } = require('../../modules/browserHelper.js');
+const {
+  SUPPORTED_BROWSERS,
+  CURRENT_BROWSER,
+} = require('../../modules/browserHelper.js');
 const PROJECT_NAME = process.env.PROJECT_NAME;
 
 const chromeCapabilities = {
@@ -14,9 +18,9 @@ const chromeCapabilities = {
       '--no-sandbox',
       '--disable-web-security',
       '--headless',
-      '--start-maximized'
-    ]
-  }
+      '--start-maximized',
+    ],
+  },
 };
 
 const firefoxCapabilities = {
@@ -25,29 +29,45 @@ const firefoxCapabilities = {
   os_version: 'Ubuntu',
   width: '1920',
   height: '1080',
-  'moz:firefoxOptions': { args: ['-headless'] }
+  'moz:firefoxOptions': { args: ['-headless'] },
 };
 
-const browserStackConfig = (browserName, browserVersion, os, os_version, width = '1920', height = '1080') => {
+const browserStackConfig = (
+  browserName,
+  browserVersion,
+  os,
+  // eslint-disable-next-line camelcase
+  os_version,
+  width = '1920',
+  height = '1080'
+) => {
   return {
     project: PROJECT_NAME,
-    resolution: browserName.toLocaleLowerCase() === SUPPORTED_BROWSERS.SAFARI ? SCREEN_SIZE_SAFARI : SCREEN_SIZE_DEFAULT,
+    resolution:
+      browserName.toLocaleLowerCase() === SUPPORTED_BROWSERS.SAFARI
+        ? SCREEN_SIZE_SAFARI
+        : SCREEN_SIZE_DEFAULT,
     browserName,
     browserVersion,
     os,
     os_version,
     width,
     height,
-    'browserstack.local': true
+    'browserstack.local': true,
   };
 };
 
 const browserStackIE10 = browserStackConfig('IE', '10', 'Windows', '7');
 const browserStackIE11 = browserStackConfig('IE', '11', 'Windows', '10');
 const browserStackEdge = browserStackConfig('Edge', '17', 'Windows', '10');
-const browserStackSafari = browserStackConfig('Safari', '11', 'OS X', 'High Sierra');
+const browserStackSafari = browserStackConfig(
+  'Safari',
+  '11',
+  'OS X',
+  'High Sierra'
+);
 
-const capabilities = () => {
+const capabilities = (() => {
   switch (CURRENT_BROWSER) {
     case SUPPORTED_BROWSERS.FIREFOX:
       return [firefoxCapabilities];
@@ -59,12 +79,12 @@ const capabilities = () => {
       return [browserStackIE10];
     case SUPPORTED_BROWSERS.IE11:
       return [browserStackIE11];
-    case null:
+    case SUPPORTED_BROWSERS.CHROME:
       return [chromeCapabilities];
     default:
       throw new Error(`${CURRENT_BROWSER} is an unsupported browser`);
   }
-};
+})();
 
 const defaultConfig = {
   baseUrl: 'http://www.cultureamp.design',
@@ -72,20 +92,20 @@ const defaultConfig = {
   coloredLogs: true,
   reporters: ['dot', 'spec'],
   sync: false,
-  capabilities: capabilities(),
+  capabilities,
   framework: 'mocha',
   mochaOpts: {
     timeout: 600000,
-    compilers: ['js:@babel/register']
+    compilers: ['js:@babel/register'],
   },
   before: () => {
     const chai = require('chai');
     const chaiAsPromised = require('chai-as-promised');
     chai.use(chaiAsPromised);
     global.expect = chai.expect;
-  }
+  },
 };
 
 module.exports = {
-  defaultConfig
+  defaultConfig,
 };

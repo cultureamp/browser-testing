@@ -1,6 +1,6 @@
 const selenium = require('selenium-standalone');
 const config = require('./wdio.default.conf');
-const { CURRENT_BROWSER, SUPPORTED_BROWSERS } = require('../../modules/browserHelper');
+const { runInBrowserstack } = require('../../modules/browserHelper');
 const browserstack = require('browserstack-local');
 let seleniumProcess;
 let browserStackConnection;
@@ -11,7 +11,10 @@ const startSeleniumServer = () => {
   });
 };
 
-const visualConfig = { ...config.defaultConfig, specs: ['./tests/visual/**/*.test.js'] };
+const visualConfig = {
+  ...config.defaultConfig,
+  specs: ['./tests/visual/**/*.test.js'],
+};
 
 const localConfig = {
   maxInstances: 10,
@@ -24,14 +27,14 @@ const localConfig = {
     // eslint-disable-next-line no-console
     console.log('Shutting down Selenium');
     seleniumProcess.kill();
-  }
+  },
 };
 
 const dockerConfig = {
   host: 'selenium-hub',
   port: 4444,
   path: '/wd/hub',
-  maxInstances: 5
+  maxInstances: 5,
 };
 
 const browserStackConfig = {
@@ -62,10 +65,10 @@ const browserStackConfig = {
         resolve();
       });
     });
-  }
+  },
 };
 
-if (CURRENT_BROWSER && CURRENT_BROWSER !== SUPPORTED_BROWSERS.FIREFOX) {
+if (runInBrowserstack) {
   // run non chrome and firefox tests in browserstack
   exports.config = { ...visualConfig, ...browserStackConfig };
 } else if (process.env.DOCKER) {

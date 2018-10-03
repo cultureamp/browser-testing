@@ -1,119 +1,53 @@
+const browserJavaScripts = require('./browserJavaScripts');
 const { saveImage } = require('./apiRequests/visualDroidApi');
-const Promise = require('bluebird');
-const CURRENT_BROWSER = process.env.BROWSER ? process.env.BROWSER.toLocaleLowerCase() : null;
-const SUPPORTED_BROWSERS = { FIREFOX: 'firefox', SAFARI: 'safari', IE10: 'ie10', IE11: 'ie11', EDGE: 'edge' };
-
-const executeScript = script => browser.execute(script).then(result => result.value);
-
-const checkAllImageTagsLoaded = () => {
-  const script = ` function sleep(milliseconds) {
-                      var start = new Date().getTime();
-                      for (var i = 0; i < 1e7; i++) {
-                        if ((new Date().getTime() - start) > milliseconds) {
-                          break;
-                        }
-                      }
-                    }
-
-                    function image_complete(image, retry_attempt) {
-                      if (retry_attempt === 20) {
-                        throw new Error('Unable to load image - ' + image.src)
-                      }
-                      if (image.complete) {
-                        return true;
-                      }
-                      sleep(1000);
-                      return image_complete(image, retry_attempt + 1);
-                    }
-
-                    function images_complete() {
-                      var images = document.querySelectorAll('img');
-                      for (var i = 0; i < images.length; i++) {
-                        image_complete(images[i], 1);
-                      }
-                      return true;
-                    }
-
-                    return images_complete();
-                  `;
-  return executeScript(script);
+const CURRENT_BROWSER = (process.env.BROWSER || 'chrome').toLocaleLowerCase();
+const SUPPORTED_BROWSERS = {
+  FIREFOX: 'firefox',
+  SAFARI: 'safari',
+  IE10: 'ie10',
+  IE11: 'ie11',
+  EDGE: 'edge',
+  CHROME: 'chrome',
 };
 
-const addBackgroundImagesAsNewImages = () => {
-  const script = `function extractUrl(bgUrl) {
-                    // we are only concerned with images with an url and not any background image with gradients
-                    bgUrl = bgUrl.match(/^url\\((['"]?)(.*)\\1\\)$/);
-                    return bgUrl ? bgUrl[2] : '';
-                  };
+const runInBrowserstack =
+  CURRENT_BROWSER !== SUPPORTED_BROWSERS.FIREFOX &&
+  CURRENT_BROWSER !== SUPPORTED_BROWSERS.CHROME;
 
-                  function backgroundUrls() {
-                    let tags = document.getElementsByTagName('*');
-                    let allBackgroundURLs = [];
-                    for (let i = 0; i < tags.length; i++) {
-                      let bgUrl = window.getComputedStyle(tags[i]).backgroundImage;
-                      bgUrl = extractUrl(bgUrl);
-                      if (bgUrl !== '') {
-                        allBackgroundURLs.push(bgUrl);
-                      }
-                    }
-                    return allBackgroundURLs;
-                  }
+const executeScript = (script, params) =>
+  browser.execute(script, params).then(result => result.value);
 
-                  function add_images() {
-                    let urls = backgroundUrls();
-                    for (let i = 0; i < urls.length; i++) {
-                      let img = document.createElement('img');
-                      img.src = urls[i];
-                      document.body.appendChild(img);
-                    }
-                    return urls.length;
-                  }
+const repaintScreen = () => executeScript(browserJavaScripts.repaintScreen);
 
-                  return add_images();`;
-  return executeScript(script);
-};
+const checkAllImageTagsLoaded = () =>
+  executeScript(browserJavaScripts.checkAllImageTagsLoaded);
 
-const removeBackgroundImagesAddedAsNewImages = numberOfImages => {
-  const script = ` var images = document.querySelectorAll('img');
-                    for( var i = 1; i <= ${numberOfImages}; i++ ) {
-                      document.body.removeChild(images[images.length - i]);
-                    }
-                 `;
+const addBackgroundImagesAsNewImages = () =>
+  executeScript(browserJavaScripts.addBackgroundImagesAsNewImages);
 
-  return executeScript(script);
-};
+const removeBackgroundImagesAddedAsNewImages = numberOfImages =>
+  executeScript(
+    browserJavaScripts.removeBackgroundImagesAddedAsNewImages,
+    numberOfImages
+  );
 
-const imagesLoaded = () => {
+const imagesLoaded = async () => {
   if (CURRENT_BROWSER !== SUPPORTED_BROWSERS.SAFARI) {
     return checkAllImageTagsLoaded();
   }
-  let loaded = false;
-
-  return addBackgroundImagesAsNewImages()
-    .then(numberOfNewImagesAdded => {
-      return checkAllImageTagsLoaded()
-        .then(allImagesLoaded => {
-          loaded = allImagesLoaded;
-          return removeBackgroundImagesAddedAsNewImages(numberOfNewImagesAdded);
-        })
-        .then(() => {
-          return loaded;
-        });
-    });
-};
-
-const checkImagesLoaded = () => {
-  return expect(imagesLoaded()).to.eventually.be.true;
+  const numberOfNewImagesAdded = await addBackgroundImagesAsNewImages();
+  const imageTagsLoaded = await checkAllImageTagsLoaded();
+  await removeBackgroundImagesAddedAsNewImages(numberOfNewImagesAdded);
+  return imageTagsLoaded;
 };
 
 const getBrowserConfig = () => {
   const browserCapabilities = browser.desiredCapabilities;
   const browserConfig = {
-    // Maybe fail if these values are not provided
     os: browserCapabilities.os,
     osVersion: browserCapabilities.os_version,
     width: browserCapabilities.width,
-    height: browserCapabilities.height
+    height: browserCapabilities.height,
   };
 
   browserConfig.browserName = browserCapabilities.browserName;
@@ -136,40 +70,51 @@ const getImageKey = metadata =>
     .replace(/ /g, '_')
     .toLowerCase();
 
-const takeScreenShot = (retries = 0) => {
+const delay = time => result =>
+  new Promise(resolve => setTimeout(() => resolve(result), time));
+
+const takeScreenShot = async (retries = 0) => {
   const MAX_RETRIES = 4;
   if (retries === MAX_RETRIES) {
+    // DO THIS
     // [TODO] Before throwing error save last three screenshots.
     throw new Error(`Took ${MAX_RETRIES}. But the images did not match`);
   }
+  // ADD COMMENTS AROUND THIS. add delay between screen shots
+  await repaintScreen();
+  const screenShot01 = await browser.screenshot().then(delay(100));
+  const screenShot02 = await browser.screenshot().then(delay(100));
+  const screenShot03 = await browser.screenshot().then(delay(100));
 
-  return Promise.props({
-    screenShot01: browser.screenshot(),
-    screenShot02: browser.screenshot(),
-    screenShot03: browser.screenshot()
-  }).then(screenShots => {
-    if (screenShots.screenShot01.value === screenShots.screenShot02.value &&
-      screenShots.screenShot02.value === screenShots.screenShot03.value) {
-      return screenShots.screenShot01;
-    }
-    // eslint-disable-next-line no-console
-    console.log('Images did not match, lets retry', retries + 1);
-    return takeScreenShot(retries + 1);
-  });
+  if (
+    screenShot01.value === screenShot02.value &&
+    screenShot02.value === screenShot03.value
+  ) {
+    return screenShot01;
+  }
+  // eslint-disable-next-line no-console
+  console.log('Images did not match, lets retry', retries + 1);
+  return takeScreenShot(retries + 1);
 };
 
 const setBrowserResolution = (w, h) => {
   const expectedWidth = parseInt(w, 10);
   const expectedHeight = parseInt(h, 10);
-
-  return browser.setViewportSize({ width: expectedWidth, height: expectedHeight })
+  //  add comments for checking after setting size
+  return browser
+    .setViewportSize({ width: expectedWidth, height: expectedHeight })
     .getViewportSize()
     .then(actualViewPortSize => {
-      if (actualViewPortSize.width !== expectedWidth || actualViewPortSize.height !== expectedHeight) {
+      if (
+        actualViewPortSize.width !== expectedWidth ||
+        actualViewPortSize.height !== expectedHeight
+      ) {
         throw new Error(`
             Unable to resize window. 
             Expected width,height - ${expectedWidth},${expectedHeight}
-            Actual width,height - ${actualViewPortSize.width},${actualViewPortSize.height}`);
+            Actual width,height - ${actualViewPortSize.width},${
+          actualViewPortSize.height
+        }`);
       }
     });
 };
@@ -187,5 +132,6 @@ module.exports = {
   CURRENT_BROWSER,
   SUPPORTED_BROWSERS,
   runVisualTest,
-  checkImagesLoaded
+  imagesLoaded,
+  runInBrowserstack,
 };

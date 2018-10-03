@@ -9,7 +9,10 @@ const startSeleniumServer = () => {
 
 let seleniumProcess;
 
-const functionalConfig = { ...config.defaultConfig, specs: ['./tests/functional/**/*.test.js'] };
+const functionalConfig = {
+  ...config.defaultConfig,
+  specs: ['./tests/functional/**/*.test.js'],
+};
 
 const localConfig = {
   maxInstances: 20,
@@ -22,15 +25,16 @@ const localConfig = {
     // eslint-disable-next-line no-console
     console.log('Shutting down Selenium');
     seleniumProcess.kill();
-  }
+  },
 };
 
 const dockerConfig = {
   host: 'selenium-hub',
   port: 4444,
   path: '/wd/hub',
-  maxInstances: 10 };
+  maxInstances: 10,
+};
 
-exports.config = process.env.DOCKER ?
-  { ...functionalConfig, ...dockerConfig } :
-  { ...functionalConfig, ...localConfig };
+exports.config = process.env.DOCKER
+  ? { ...functionalConfig, ...dockerConfig }
+  : { ...functionalConfig, ...localConfig };

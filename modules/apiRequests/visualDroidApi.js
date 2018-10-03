@@ -12,8 +12,8 @@ const SAVE_AND_COMPARE_IMAGE_URL = `${URL_VISUAL_DROID}/saveAndCompareImage`;
 const request = axios.create({
   baseURL: BUILDKITE ? SAVE_IMAGE_URL : SAVE_AND_COMPARE_IMAGE_URL,
   auth: {
-    password: VISUAL_DROID_PASSWORD
-  }
+    password: VISUAL_DROID_PASSWORD,
+  },
 });
 
 exports.saveImage = (imgBase64str, imageKey, metadata, compareOptions) => {
@@ -21,30 +21,29 @@ exports.saveImage = (imgBase64str, imageKey, metadata, compareOptions) => {
     project: {
       name: PROJECT_NAME,
       branchSha: BRANCH_SHA,
-      compareSha: COMPARE_SHA
+      compareSha: COMPARE_SHA,
     },
     image: {
       key: imageKey,
-      base64EncodeString: imgBase64str
+      base64EncodeString: imgBase64str,
     },
-    metadata
+    metadata,
   };
 
   if (typeof compareOptions !== 'undefined') {
     payload.image.looksSameAlgoOptions = compareOptions;
   }
 
-  return request.post('/', payload)
-    .then(response => {
-      const data = response.data;
-      if (typeof data.errorMessage !== 'undefined') {
-        throw new Error(`Visual comparison fail - ${data.errorMessage}`);
-      }
-      if (!BUILDKITE) {
-        // eslint-disable-next-line no-console
-        console.info(data);
-        return data.upload && data.imagesMatch;
-      }
-      return data.upload;
-    });
+  return request.post('/', payload).then(response => {
+    const data = response.data;
+    if (typeof data.errorMessage !== 'undefined') {
+      throw new Error(`Visual comparison fail - ${data.errorMessage}`);
+    }
+    if (!BUILDKITE) {
+      // eslint-disable-next-line no-console
+      console.info(data);
+      return data.upload && data.imagesMatch;
+    }
+    return data.upload;
+  });
 };
