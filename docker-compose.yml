@@ -2,7 +2,9 @@ version: '3.3'
 services:
 
   selenium-hub:
-    image: selenium/hub:3.12
+    image: selenium/hub:3.14
+    ports:
+      - "4444:4444"
     volumes:
       - /dev/shm:/dev/shm
     environment:
@@ -59,6 +61,7 @@ services:
       - PROJECT_NAME
       - BROWSERSTACK_USERNAME
       - BROWSERSTACK_ACCESS_KEY
+      - TEST_TYPE
     depends_on:
       - selenium-hub
       - chrome

@@ -1,5 +1,6 @@
 const browserJavaScripts = require('./browserJavaScripts');
 const { saveImage } = require('./apiRequests/visualDroidApi');
+const { delay } = require('./helper');
 const CURRENT_BROWSER = (process.env.BROWSER || 'chrome').toLocaleLowerCase();
 const SUPPORTED_BROWSERS = {
   FIREFOX: 'firefox',
@@ -69,9 +70,6 @@ const getImageKey = metadata =>
     .join(' ')
     .replace(/ /g, '_')
     .toLowerCase();
-
-const delay = time => result =>
-  new Promise(resolve => setTimeout(() => resolve(result), time));
 
 const takeScreenShot = async (retries = 0) => {
   const MAX_RETRIES = 4;

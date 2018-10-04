@@ -5,8 +5,8 @@ set -u
 
 BROWSER=${BROWSER:-}
 BUILDKITE=${BUILDKITE:-}
-BUILDKITE_BUILD_URL=${BUILDKITE_BUILD_URL:-}
-BUILDKITE_JOB_ID=${BUILDKITE_JOB_ID:-}
+VISUAL_DROID_PASSWORD=${VISUAL_DROID_PASSWORD:-}
+
 PROJECT_NAME='browser-testing'
 
 if [[ -z "$BROWSER" ]]; then
@@ -29,7 +29,7 @@ fi
 
 if [ -z "$VISUAL_DROID_PASSWORD" ] ; then
     echo "
-            Visual droid api is now behind a secure end point and needs a password to run.
+            Visual droid api is behind a secure end point and needs a password to run.
             Please set the value of VISUAL_DROID_PASSWORD
             To get the password please check LastPass secure notes under visual droid api"
     exit 1

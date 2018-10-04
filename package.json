@@ -8,10 +8,10 @@
   },
   "scripts": {
     "nodecheck": "source ~/.nvm/nvm.sh && nvm use",
-    "test:functional:docker": "TEST_TYPE=functional bin/ci_tests.sh",
-    "test:functional:local": "wdio ./config/wdio/wdio.functional.conf.js",
+    "test:functional:docker": "bin/ci_tests.sh",
+    "test:functional": "wdio ./config/wdio.conf.js",
     "test:visual:docker": "TEST_TYPE=visual bin/ci_tests.sh",
-    "test:visual:local": "source bin/visualTestingEnv.sh && wdio ./config/wdio/wdio.visual.conf.js",
+    "test:visual": "source bin/visualTestingEnv.sh && TEST_TYPE=visual wdio ./config/wdio.conf.js",
     "setup": "yarn nodecheck && yarn && node_modules/.bin/selenium-standalone install",
     "lint": "eslint --config .eslintrc.js \"**/*.js\""
   },
@@ -50,6 +50,5 @@
     "wdio-mocha-framework": "^0.6.3",
     "wdio-spec-reporter": "^0.1.5",
     "webdriverio": "^4.13.2"
-  },
-  "dependencies": {}
+  }
 }

@@ -1,7 +1,7 @@
-// Keep the code withing the scripts ES5 version of javascript, as these run in the
-// context of the browser, some new features are not supported in IE 10/11
+// Keep the code of these scripts as ES5 version of javascript, as these run in the
+// context of the browser and some new features are not supported in IE 10/11
 
-const checkAllImageTagsLoaded = () => {
+const checkAllImageTagsLoaded = function() {
   function sleep(milliseconds) {
     var start = new Date().getTime();
     var i;
@@ -35,7 +35,7 @@ const checkAllImageTagsLoaded = () => {
   return imagesComplete();
 };
 
-const addBackgroundImagesAsNewImages = () => {
+const addBackgroundImagesAsNewImages = function() {
   function extractUrl(bgUrl) {
     // we are only concerned with images with an url and not any background image with gradients
     var url = bgUrl.match(/^url\\((['"]?)(.*)\\1\\)$/);
@@ -72,15 +72,15 @@ const addBackgroundImagesAsNewImages = () => {
   return addImages();
 };
 
-const repaintScreen = () => {
-  const yAxis = window.pageYOffset;
+const repaintScreen = function() {
+  var yAxis = window.pageYOffset;
   document.body.style.display = 'none';
   document.body.offsetHeight;
   document.body.style.display = '';
   window.scrollTo(0, yAxis);
 };
 
-const removeBackgroundImagesAddedAsNewImages = numberOfImages => {
+const removeBackgroundImagesAddedAsNewImages = function(numberOfImages) {
   var images = document.querySelectorAll('img');
   var i;
   for (i = 1; i <= numberOfImages; i++) {
