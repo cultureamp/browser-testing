@@ -1,7 +1,7 @@
 const axios = require('axios');
 const USER = process.env.BROWSERSTACK_USERNAME;
 const PASSWORD = process.env.BROWSERSTACK_ACCESS_KEY;
-
+const { delay } = require('../helper');
 const request = axios.create({
   baseURL: 'https://api.browserstack.com/automate',
   auth: {
@@ -10,7 +10,7 @@ const request = axios.create({
   },
 });
 
-const pause = duration => new Promise(res => setTimeout(res, duration));
+// const pause = duration => new Promise(res => setTimeout(res, duration));
 
 const connectionsAvailable = (retries = 0) => {
   const MAX_RETRIES = 5;
@@ -42,7 +42,7 @@ const connectionsAvailable = (retries = 0) => {
       );
       return CURRENT_QUEUE < MAX_QUEUE
         ? true
-        : pause(30000).then(() => connectionsAvailable(retries + 1));
+        : delay(30000)().then(() => connectionsAvailable(retries + 1));
     })
     .catch(e => {
       // eslint-disable-next-line no-console
