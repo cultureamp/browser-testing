@@ -40,6 +40,8 @@ const imagesLoaded = async () => {
   if (CURRENT_BROWSER !== SUPPORTED_BROWSERS.SAFARI) {
     return checkAllImageTagsLoaded();
   }
+  // Safari is having some issues with background images,
+  // hence ensuring that background images are loaded in safari
   const numberOfNewImagesAdded = await addBackgroundImagesAsNewImages();
   const imageTagsLoaded = await checkAllImageTagsLoaded();
   await removeBackgroundImagesAddedAsNewImages(numberOfNewImagesAdded);
