@@ -8,12 +8,13 @@
   },
   "scripts": {
     "nodecheck": "source ~/.nvm/nvm.sh && nvm use",
-    "test:functional:docker": "bin/ci_tests.sh",
+    "test:functional:docker": "bin/dockerTests.sh",
     "test:functional": "wdio ./config/wdio.conf.js",
-    "test:visual:docker": "TEST_TYPE=visual bin/ci_tests.sh",
+    "test:visual:docker": "TEST_TYPE=visual bin/dockerTests.sh",
     "test:visual": "source bin/visualTestingEnv.sh && TEST_TYPE=visual wdio ./config/wdio.conf.js",
     "setup": "yarn nodecheck && yarn",
-    "lint": "eslint --config .eslintrc.js \"**/*.js\""
+    "lint": "eslint --config .eslintrc.js \"**/*.js\"",
+    "lint:docker": "bin/dockerLint.sh"
   },
   "repository": {
     "type": "git",
