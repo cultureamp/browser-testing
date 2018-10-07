@@ -7,12 +7,12 @@ Browser automation library to run visual and functional tests. Both visual and f
 - Internet Explorer 10 
 - Internet Explorer 11
 
-
 <!-- TOC depthFrom:2 -->
 
 - [Getting Started](#getting-started)
     - [Clone](#clone)
     - [Local Setup](#local-setup)
+    - [Environment Variables](#environment-variables)
     - [Run functional test](#run-functional-test)
         - [Locally](#locally)
             - [Chrome](#chrome)
@@ -46,6 +46,20 @@ git clone git@github.com:cultureamp/browser-testing.git ~/code/cultureamp/browse
 ### Local Setup
 ```
 yarn setup
+```
+### Environment Variables
+
+Visual tests run against an API which is accessible via a password. Please set your environment variable VISUAL_DROID_PASSWORD. The value for the password can be retrieved from LastPass. 
+
+```
+export VISUAL_DROID_PASSWORD=password
+```
+
+For visual tests that run in browserstack(IE/Edge/Safari), we need browserstack user and password. Please set your environment variables BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY. Those can also be retrieved from LastPass
+
+```
+export BROWSERSTACK_USERNAME=username
+export BROWSERSTACK_ACCESS_KEY=key
 ```
 
 ### Run functional test
@@ -101,7 +115,7 @@ yarn lint:docker
 ```
 
 ### Browser env variable
-The environment variable browser can have the following values
+The environment variable BROWSER can have the following values
  - Chrome
  - Firefox
  - Safari
