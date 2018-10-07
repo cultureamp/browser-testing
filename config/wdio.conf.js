@@ -1,11 +1,9 @@
-const selenium = require('selenium-standalone');
 const axios = require('axios');
 const browserstack = require('browserstack-local');
 const { runInBrowserstack } = require('../modules/browserHelper');
 const { delay } = require('../modules/helper');
 
 let browserStackConnection;
-let seleniumProcess;
 
 // This is the screen size and not the size of the browser window
 const SCREEN_SIZE_DEFAULT = '2048x1536';
@@ -26,8 +24,8 @@ const chromeCapabilities = {
     args: [
       '--no-sandbox',
       '--disable-web-security',
-      '--headless',
       '--start-maximized',
+      '--headless',
     ],
   },
 };
@@ -150,26 +148,9 @@ const dockerWdioConfig = {
   onPrepare: () => seleniumHubIsUp(),
 };
 
-const startSeleniumServer = () => {
-  return new Promise((resolve, reject) => {
-    selenium.start((err, process) => (err ? reject(err) : resolve(process)));
-  });
-};
-
 const localWdioConfig = {
   maxInstances: 10,
-  onPrepare: () => {
-    // eslint-disable-next-line no-console
-    console.log('Starting Selenium');
-    return startSeleniumServer().then(process => {
-      seleniumProcess = process;
-    });
-  },
-  onComplete: () => {
-    // eslint-disable-next-line no-console
-    console.log('Shutting down Selenium');
-    seleniumProcess.kill();
-  },
+  services: ['selenium-standalone'],
 };
 
 const browserStackWdioConfig = {

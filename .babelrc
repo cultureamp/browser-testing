@@ -7,5 +7,14 @@
       }
     ]
   ],
-  "plugins": ["@babel/plugin-transform-runtime"]
+  "plugins":[
+    ["module-resolver", {
+      "root": ["./"],
+      "alias": {
+        "pageobjects": "./pageobjects",
+        "modules":"./modules"
+      }
+    }],
+    "@babel/plugin-transform-runtime"
+  ] 
 }

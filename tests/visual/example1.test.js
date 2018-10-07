@@ -1,15 +1,11 @@
 const { addHooks } = require('../../modules/hooksHelper');
 addHooks();
-const { imagesLoaded } = require('../../modules/browserHelper');
+import StylesPage from 'pageobjects/styles.page';
 
 describe('CultureAmp Design website style page 1', () => {
   it('shows the text Visuals', () => {
-    return browser
-      .url('/styles')
-      .then(
-        () => expect(imagesLoaded(), 'All Images loaded').to.eventually.be.true
-      )
-      .getText('[id=visuals]')
+    return StylesPage.open()
+      .then(() => StylesPage.getContentHeadingText())
       .then(text => expect(text).to.equal('Visuals'));
   });
 });
