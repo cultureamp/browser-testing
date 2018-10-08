@@ -49,10 +49,11 @@ yarn setup
 ```
 ### Environment Variables
 
-Visual tests run against an API which is accessible via a password. Please set your environment variable VISUAL_DROID_PASSWORD. The value for the password can be retrieved from LastPass. 
+Visual tests run against an API which is accessible via a password. Please set your environment variables URL_VISUAL_DROID and VISUAL_DROID_PASSWORD. The values for these can be retrieved from LastPass. 
 
 ```
 export VISUAL_DROID_PASSWORD=password
+export URL_VISUAL_DROID=http://url.com
 ```
 
 For visual tests that run in browserstack(IE/Edge/Safari), we need browserstack user and password. Please set your environment variables BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY. Those can also be retrieved from LastPass
@@ -61,6 +62,7 @@ For visual tests that run in browserstack(IE/Edge/Safari), we need browserstack 
 export BROWSERSTACK_USERNAME=username
 export BROWSERSTACK_ACCESS_KEY=key
 ```
+You will also need to update the environment variable PROJECT_NAME, which is set in the file [visualTestingEnv](bin/visualTestingEnv.sh)
 
 ### Run functional test
 

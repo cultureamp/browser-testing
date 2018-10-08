@@ -10,8 +10,6 @@ const request = axios.create({
   },
 });
 
-// const pause = duration => new Promise(res => setTimeout(res, duration));
-
 const connectionsAvailable = (retries = 0) => {
   const MAX_RETRIES = 5;
   if (retries === MAX_RETRIES) {
