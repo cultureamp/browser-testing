@@ -1,0 +1,59 @@
+{
+  "name": "browser-testing",
+  "version": "1.0.0",
+  "description": "Tool to do browser automation",
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.11.4"
+  },
+  "scripts": {
+    "nodecheck": "source ~/.nvm/nvm.sh && nvm use",
+    "test:functional:docker": "bin/dockerTests.sh",
+    "test:functional": "wdio ./config/wdio.conf.js",
+    "test:visual:docker": "TEST_TYPE=visual bin/dockerTests.sh",
+    "test:visual": "source bin/visualTestingEnv.sh && TEST_TYPE=visual wdio ./config/wdio.conf.js",
+    "setup": "yarn nodecheck && yarn",
+    "lint": "eslint --config .eslintrc.js \"**/*.js\"",
+    "lint:docker": "bin/dockerLint.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cultureamp/browser-testing.git"
+  },
+  "keywords": [
+    "testing",
+    "automation",
+    "browser",
+    "visual"
+  ],
+  "author": "Kunwardeep Singh Bedi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cultureamp/browser-testing/issues"
+  },
+  "homepage": "https://github.com/cultureamp/browser-testing#readme",
+  "devDependencies": {
+    "@babel/core": "^7.0.1",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
+    "axios": "^0.18.0",
+    "babel-plugin-module-resolver": "^3.1.1",
+    "browserstack-local": "^1.3.4",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^5.5.0",
+    "eslint-import-resolver-babel-module": "5.0.0-beta.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-mocha": "^5.2.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "prettier": "^1.14.3",
+    "wdio-mocha-framework": "^0.6.3",
+    "wdio-spec-reporter": "^0.1.5",
+    "webdriverio": "^4.13.2"
+  },
+  "dependencies": {
+    "wdio-selenium-standalone-service": "^0.0.10"
+  }
+}
