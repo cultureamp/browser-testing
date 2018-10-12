@@ -14,6 +14,8 @@ if [[ -z "$BROWSER" ]]; then
 else
     export PROJECT_NAME="${PROJECT_NAME}_cross_browser"
 fi
+currentbranch=$(git branch | grep \* | cut -d ' ' -f2)
+echo "current brnach -- $currentbranch"
 
 export CURRENT_BRANCH=${BUILDKITE_BRANCH:-$(git rev-parse --abbrev-ref HEAD)}
 CURRENT_SHA=$(git rev-parse HEAD)
