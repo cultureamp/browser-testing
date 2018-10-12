@@ -16,9 +16,9 @@ before_install:
   - git branch -r
 script:
   - yarn test:functional:docker
-  - yarn test:visual:docker
-  - BROWSER=Firefox yarn test:visual:docker
-  - BROWSER=IE10 yarn test:visual:docker
-  - BROWSER=IE11 yarn test:visual:docker
-  - BROWSER=Edge yarn test:visual:docker
-  - BROWSER=Safari yarn test:visual:docker
+  # - yarn test:visual:docker
+  # - BROWSER=Firefox yarn test:visual:docker
+  # - BROWSER=IE10 yarn test:visual:docker
+  # - BROWSER=IE11 yarn test:visual:docker
+  # - BROWSER=Edge yarn test:visual:docker
+  # - BROWSER=Safari yarn test:visual:docker
