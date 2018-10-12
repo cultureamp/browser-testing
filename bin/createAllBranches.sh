@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # https://stackoverflow.com/questions/34405047/how-do-you-merge-into-another-branch-using-travis-with-git-commands
 # Keep track of where Travis put us.
 # We are on a detached head, and we need to be able to go back to it.
