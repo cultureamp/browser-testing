@@ -3,8 +3,7 @@ language: node_js
 os: linux
 node_js: lts/*
 env:
-  - DOCKER_COMPOSE_VERSION=1.22.0
-  - CI=true
+  - DOCKER_COMPOSE_VERSION=1.22.0 CI=true
 before_install:
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
@@ -15,7 +14,7 @@ before_install:
   - bin/createAllBranches.sh
 script:
   - yarn test:functional:docker
-  # - yarn test:visual:docker
+  - yarn test:visual:docker
   # - BROWSER=Firefox yarn test:visual:docker
   # - BROWSER=IE10 yarn test:visual:docker
   # - BROWSER=IE11 yarn test:visual:docker
