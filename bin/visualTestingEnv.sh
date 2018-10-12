@@ -14,17 +14,12 @@ if [[ -z "$BROWSER" ]]; then
 else
     export PROJECT_NAME="${PROJECT_NAME}_cross_browser"
 fi
-currentbranch=$(git branch)
-echo "current brnach -- $currentbranch"
 
 export CURRENT_BRANCH=${BUILDKITE_BRANCH:-$(git rev-parse --abbrev-ref HEAD)}
 CURRENT_SHA=$(git rev-parse HEAD)
 
 export BRANCH_SHA=${CURRENT_SHA}
-echo "Do compare sha 1"
 export COMPARE_SHA=$(git merge-base origin/master "$CURRENT_SHA")
-echo "compare sha 1 - $COMPARE_SHA"
-
 
 if [ "$BUILDKITE" == "true" ] ; then
     export GITHUB_STATUS_TARGET_URL="$BUILDKITE_BUILD_URL#$BUILDKITE_JOB_ID"
