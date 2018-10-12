@@ -24,7 +24,7 @@ export COMPARE_SHA=$(git merge-base origin/master "$CURRENT_SHA")
 if [ "$CI" == "true" ] ; then
     # TODO Create a new GITHUB_STATUS_TARGET_URL. This is an example of an internal url. 
     # We will need to create on based on travis. This is used to create a hyperlink from github to travis
-    export GITHUB_STATUS_TARGET_URL="$BUILDKITE_BUILD_URL#$BUILDKITE_JOB_ID"
+    # export GITHUB_STATUS_TARGET_URL="$BUILDKITE_BUILD_URL#$BUILDKITE_JOB_ID"
     export LAST_COMMIT_SHA=$(git log origin/master.. --pretty=tformat:'%H' | head -n 1)
     export GITHUB_URL="https://api.github.com/repos/cultureamp/murmur/statuses/$LAST_COMMIT_SHA"
 fi
