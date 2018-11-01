@@ -4,7 +4,7 @@ set -o pipefail
 set -u
 
 BROWSER=${BROWSER:-}
-BUILDKITE=${BUILDKITE:-}
+CI=${CI:-}
 VISUAL_DROID_PASSWORD=${VISUAL_DROID_PASSWORD:-}
 
 PROJECT_NAME='browser-testing'
@@ -15,14 +15,16 @@ else
     export PROJECT_NAME="${PROJECT_NAME}_cross_browser"
 fi
 
-export CURRENT_BRANCH=${BUILDKITE_BRANCH:-$(git rev-parse --abbrev-ref HEAD)}
+export CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 CURRENT_SHA=$(git rev-parse HEAD)
 
 export BRANCH_SHA=${CURRENT_SHA}
 export COMPARE_SHA=$(git merge-base origin/master "$CURRENT_SHA")
 
-if [ "$BUILDKITE" == "true" ] ; then
-    export GITHUB_STATUS_TARGET_URL="$BUILDKITE_BUILD_URL#$BUILDKITE_JOB_ID"
+if [ "$CI" == "true" ] ; then
+    # TODO Create a new GITHUB_STATUS_TARGET_URL. This is an example of an internal url. 
+    # We will need to create on based on travis. This is used to create a hyperlink from github to travis
+    # export GITHUB_STATUS_TARGET_URL="$BUILDKITE_BUILD_URL#$BUILDKITE_JOB_ID"
     export LAST_COMMIT_SHA=$(git log origin/master.. --pretty=tformat:'%H' | head -n 1)
     export GITHUB_URL="https://api.github.com/repos/cultureamp/murmur/statuses/$LAST_COMMIT_SHA"
 fi

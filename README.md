@@ -1,4 +1,4 @@
-# browser-testing
+# browser-testing  [![Build Status](https://travis-ci.org/cultureamp/browser-testing.svg?branch=master)](https://travis-ci.org/cultureamp/browser-testing)
 Browser automation library to run visual and functional tests. Both visual and functional can be run in multiple browsers. The browsers that are supported are
 - Chrome (default Browser)
 - Firefox 
