@@ -7,6 +7,8 @@ Browser automation library to run visual and functional tests. Both visual and f
 - Internet Explorer 10 
 - Internet Explorer 11
 
+Browser Testing is maintained by the Front End Capability Team at Culture Amp (#team_front_end in #camp_amplify).
+
 <!-- TOC depthFrom:2 -->
 
 - [Getting Started](#getting-started)
